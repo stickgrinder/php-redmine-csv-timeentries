@@ -1,6 +1,5 @@
 [server]
-; URL of redmine installation
-hostname=
-; User credentials
-username=
-password=
+; Full URL of redmine installation, with protocol (ex: http://mytracker.mydomain.tld)
+redmine_url=
+; API consumer key (find it in you account resume on Redmine)
+consumer_key=
