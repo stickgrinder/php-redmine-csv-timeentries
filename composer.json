@@ -12,7 +12,9 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "kbsali/redmine-api": "dev-master"
+        "kbsali/redmine-api": "dev-master",
+        "symfony/console": "dev-master",
+        "keboola/csv": "1.0.*"
     },
     "minimum-stability": "dev"
 }
