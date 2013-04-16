@@ -1,0 +1,18 @@
+{
+    "name": "agavee/php-redmine-csv-timeentries",
+    "type": "application",
+    "description": "Bulk importer of RM time entries from CSV file",
+    "keywords": ["redmine", "time entries", "csv", "bulk import"],
+    "homepage": "https://bitbucket.org/agavee/php-redmine-csv-timeentries",
+    "authors": [
+        {
+            "name": "Paolo Pustorino",
+            "email": "paolo@agavee.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "kbsali/redmine-api": "dev-master"
+    },
+    "minimum-stability": "dev"
+}
