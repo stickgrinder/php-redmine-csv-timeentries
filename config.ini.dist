@@ -1,0 +1,6 @@
+[server]
+; URL of redmine installation
+hostname=
+; User credentials
+username=
+password=
