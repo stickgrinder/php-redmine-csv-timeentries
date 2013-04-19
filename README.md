@@ -31,7 +31,7 @@ Almost done:
     cp config.ini.dist config.ini
     vi config.ini
 
-WAT? No vi-fu? OK, open @config.ini@ with you preferred editor and figure out params like a boss.
+WAT? No vi-fu? OK, open `config.ini` with you preferred editor and figure out params like a boss.
 Done? OK, that's all. Test the thing out with
 
     ./loader help load
