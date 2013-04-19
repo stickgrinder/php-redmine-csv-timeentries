@@ -61,9 +61,9 @@ You're ready to rock!
 
 Writing CSV files by hand sucks, but even if you use a spreadsheet and export data in CSV, it's important to keep those convention in mind:
 
-* Field separator: ,
-* Field delimiter: "
-* Enctype: UTF-8
+* Field separator: `,`
+* Field delimiter: `"`
+* Enctype: `UTF-8`
 
 That said, the very first line *MUST* (hey... really, it *MUST*) contain what follows:
 
@@ -71,14 +71,14 @@ That said, the very first line *MUST* (hey... really, it *MUST*) contain what fo
 
 If you're working in a spreadsheet you'll simply put each label delimited by "..." in its own column, in the first line.
 The following lines should contain actual data. Odds are good you already know all details but if in doubt, take a look here: http://www.redmine.org/projects/redmine/wiki/Rest_TimeEntries
-Remember that while both @issue_id@ and @activity_id@ are integers, @project_id@ is a string identifing your project. You could spot it in the project URL.
+Remember that while both `issue_id` and `activity_id` are integers, `project_id` is a string identifing your project. You could spot it in the project URL.
 
     http://my.tracker.url/projects/my-beloved-project
                                        ^
                                        |
                                        ---------- hey, it's me! ~_~ cute uh?!
 
-Now name your file what the hell you see fit (my suggestion: go for a date identifier, such as 2013-may.csv or 2013-week13.csv etc) and put it in @data@ directory.
+Now name your file what the hell you see fit (my suggestion: go for a date identifier, such as 2013-may.csv or 2013-week13.csv etc) and put it in `data` directory.
 
 ## Usage
 
@@ -91,7 +91,7 @@ When you feel ready, launch
 
     ./loader load data/your-file-name.csv
 
-Use @-v@ or @--verbose@ to receive an output similar to the one before.
+Use `-v` or `--verbose` to receive an output similar to the one before.
 
 OK, you should be server.
 Bye.
