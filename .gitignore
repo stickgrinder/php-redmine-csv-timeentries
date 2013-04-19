@@ -1,5 +1,7 @@
 vendor
 vendor/*
+data/*.csv
+history/history.csv
 composer.lock
 composer
 composer.phar
