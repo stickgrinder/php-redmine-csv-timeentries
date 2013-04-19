@@ -1,13 +1,13 @@
 <?php
-namespace Agavee\TimeEntries\Commands;
+namespace src\Commands;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Keboola\Csv;
-use Redmine;
+use Keboola\Csv\CsvFile;
+use Redmine\Client;
 
 class LoadCommand extends Command {
 
@@ -21,17 +21,14 @@ class LoadCommand extends Command {
                 'Which file do you want to load? (with path)'
             )
             ->addOption(
-                'verbose',
-                InputOption::VALUE_NONE,
-                'Gives complete output for each entry'
-            )
-            ->addOption(
                 'dry-run',
+                'd',
                 InputOption::VALUE_NONE,
                 'Simulates the loading using console output but does not load content to Redmine'
             )
             ->addOption(
                 'force',
+                'f',
                 InputOption::VALUE_NONE,
                 'Load file contents even if the file has already been loaded *somewhen* in the past'
             );
@@ -46,8 +43,28 @@ class LoadCommand extends Command {
             $output->writeln('<comment>Look config.ini.dist for info</comment>');
         } else {
 
+            $fhash = array(
+                'name' => basename($input->getArgument('input')),
+                'hash' => sha1_file($input->getArgument('input'))
+            );
+            $history = new CsvFile('history/history.csv');
+            // check for file name to be loaded already
+            if (!$input->getOption('force')) {
+                foreach ($history as $item) {
+                    if ($item[0] === $fhash['name']) {
+                        if ($item[1] === $fhash['hash'])
+                            $output->writeln('<error>It seems this file has already been loaded. Use --force if you really want to load this file.</error>');
+                        else
+                            $output->writeln('<error>It seems a file named '.$fhash['name'].' has already been loaded, but the content is not the same. If you are sure of what you are doing, run this command again with --force.</error>');
+                        die();
+                    }
+                }
+            }
+
             // reading CSV file specified in parameters
             $csv = new CsvFile($input->getArgument('input'));
+            $header = $csv->getHeader();
+            $first = true;
 
             // Do the actual job
             try {
@@ -56,16 +73,22 @@ class LoadCommand extends Command {
 
                 // foreach row in CSV file, load it and show proper output
                 foreach($csv as $row) {
+                    if ($first) {
+                        $first = false;
+                        continue;
+                    }
+                    $entry = array_combine($header,$row);
                     if (!$input->getOption('dry-run')) {
-                        //$client->api('time_entry')->create($row);
-                        var_dump($row);
+                        $client->api('time_entry')->create($entry);
                     }
                     if ($input->getOption('dry-run') || $input->getOption('verbose')) {
-                        $ouput->writeln('<info>Time entry added</info>');
+                        $output->writeln(sprintf('<info>Time entry added: %s</info>',json_encode($entry)));
                     }
                 }
 
-                $output->writeln('<comment>'.count($csv).' loaded</comment>');
+                $output->writeln('<comment>'.(iterator_count($csv)-1).' loaded</comment>');
+                if (!$input->getOption('dry-run'))
+                    $history->writeRow($fhash); // TODO: this shit does not work! :(
 
             } catch(\Exception $e) {
                 $output->writeln('<error>'.$e->getMessage().'</error>');
