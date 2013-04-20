@@ -1,6 +1,6 @@
 vendor
 vendor/*
-data/*.csv
+data/*
 history/history.csv
 composer.lock
 composer
